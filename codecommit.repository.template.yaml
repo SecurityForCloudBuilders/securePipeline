@@ -1,0 +1,12 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description:  >
+    This template create a new Repository in AWS CodeCommit.
+
+Resources:
+
+  # Creating a empty Repo in AWS CodeCommit called "MyVulnerableApp"
+  MyCodeCommit:
+    Type: AWS::CodeCommit::Repository
+    Properties:
+      RepositoryName: MyVulnerableApp
+      RepositoryDescription: This is a repository for the HeadPage vulnerable app used to test and Demo.

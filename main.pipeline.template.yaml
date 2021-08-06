@@ -1,0 +1,218 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description:  >
+    This template creates a CI/CD DevSecOps pipeline using Trend Micro Cloud One Solutions to build a more secure proccess automatically.
+
+Parameters:
+
+  SnykToken:
+    Type: String
+    Description: Your Snyk Token to be used in the Snyk CLI Continuos Integration.
+
+  RepoName:
+    Type: String
+    Description: The name of your repository.
+
+Resources:
+
+  #SSM Parameter to store the Snyk Token
+  SnykTokenParameter:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: snykAuthToken
+      Type: String
+      Description: Parameter to store the Snyk Token
+      Tier: Standard
+      Value: !Sub "${SnykToken}"
+
+  BucketToStoreArtifacts:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Join
+      - "-"
+      - - "bucket-to-store-artifacts-pipeline-workshop"
+        - !Select
+          - 0
+          - !Split
+            - "-"
+            - !Select
+              - 2
+              - !Split
+                - "/"
+                - !Ref "AWS::StackId"
+
+  BucketToStoreCode:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Join
+      - "-"
+      - - "bucket-to-store-repo-code"
+        - !Select
+          - 0
+          - !Split
+            - "-"
+            - !Select
+              - 2
+              - !Split
+                - "/"
+                - !Ref "AWS::StackId"
+
+  MySecurePipeline:
+    Type: AWS::CodePipeline::Pipeline
+    Properties:
+      #ArtifactStore: !Ref ArtifactStore2
+      Name: TrendMicro-SecurePipelineWorkshop
+      RestartExecutionOnUpdate: true
+      RoleArn: !GetAtt PipelineRole.Arn
+      Stages:
+        - Name: Source
+          Actions:
+            - Name: SourceAction
+              ActionTypeId:
+                Category: Source # Valid categories "Source", "Build", "Test", "Deploy", "Invoke", and "Approval"
+                Owner: AWS  # 3 valid values - AWS, Thirdparty, and custom
+                Version: '1'
+                Provider: CodeCommit # Depends on the Action Category, various Action Provider options are available. Refer to codepipeline CF template documentation.
+              OutputArtifacts:
+                - Name: SourceOutput
+              Configuration: # for each action provider, the configuration parameters differ. Refer to codepipeline structure reference documentation. https://docs.aws.amazon.com/codepipeline/latest/userguide/reference-pipeline-structure.html#structure-configuration-examples
+                BranchName: master
+                RepositoryName: !Sub ${RepoName}
+                PollForSourceChanges: false
+              RunOrder: 1
+
+        ## Build the project and use SnykCLI to Scan the code Hosted in CodeCommit
+        - Name: Scan-The-Code-With-Snyk-CLI
+          Actions:
+            - Name: Snyk-Scan
+              InputArtifacts:
+                - Name: SourceOutput
+              ActionTypeId:
+                Category: Test
+                Owner: AWS
+                Version: '1'
+                Provider: CodeBuild
+              OutputArtifacts:
+                - Name: SnykResult
+              Configuration:
+                ProjectName: !Ref CodeBuildSnykScan
+              RunOrder: 2
+          
+        ### Deploy Code to S3
+        - Name: Test-to-S3
+          Actions:
+            - Name: DeployStagingAction
+              InputArtifacts:
+                - Name: SourceOutput
+              ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: 1
+                Provider: S3
+              Configuration: 
+                  BucketName: !Ref BucketToStoreCode
+                  ObjectKey: pipeline-trendworkshop
+                  Extract: true
+              RunOrder: 3
+
+      
+      ArtifactStore: 
+        Type: S3 
+        Location:
+          Ref: BucketToStoreArtifacts 
+
+  ### CodeBuild to build and test for Vulnerabilities the Repo
+  CodeBuildSnykScan:
+    Type: AWS::CodeBuild::Project
+    Properties: 
+      Description: Build Project to Scan for Vulnerabilities in the Dependencies using Synk CLI
+      Artifacts: 
+        Type: NO_ARTIFACTS
+      Environment:
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/standard:4.0
+        Type: LINUX_CONTAINER
+        PrivilegedMode: false
+      ServiceRole: !Ref CodeBuildSnykScanRole
+      Source:
+        Type: CODECOMMIT
+        Location: !Sub https://git-codecommit.us-east-1.amazonaws.com/v1/repos/${RepoName}
+        BuildSpec: buildspec-snyk-scan.yml
+      LogsConfig:
+          CloudWatchLogs:
+            GroupName: TrendMicro-SecurePipelineWorkshop-logs
+            Status: ENABLED
+            StreamName: SnykScan
+      QueuedTimeoutInMinutes: 10
+      Tags:
+        - Key: pipeline-name
+          Value: TrendMicro-SecurePipelineWorkshop 
+
+  ### Role used by The Pipeline
+  PipelineRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: codepipeline.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: trend-micro-pipeline-workshop
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action: '*'
+                Resource: '*'
+
+    ### CodeBuildSnykScan Role
+  CodeBuildSnykScanRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action: sts:AssumeRole
+            Principal:
+              Service: codebuild.amazonaws.com
+      Policies:
+        - PolicyName: SecurityCodeAnalysisPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action: iam:PassRole
+                Resource: '*'
+              - Effect: Allow
+                Action:
+                  - iam:PassRole
+                  - logs:*
+                  - s3:*
+                  - cloudformation:*
+                  - cloudwatch:*
+                  - codebuild:*
+                  - codecommit:*
+                  - codepipeline:*
+                  - ssm:*
+                  - lambda:*
+                    #- cloudtrail:*
+                    #- kms:*
+                    #- ecr:*
+                Resource: '*'
+
+Outputs:
+
+  S3BucketName:
+    Description: URL of the Bucket where the artifacts of the Pipeline is
+    Value:  !Sub https://s3.console.aws.amazon.com/s3/buckets/${BucketToStoreArtifacts}?region=${AWS::Region}
+
+  S3BucketRepo:
+    Description: URL of the Bucket where the code is now
+    Value:  !Sub https://s3.console.aws.amazon.com/s3/buckets/${BucketToStoreCode}?region=${AWS::Region}
+
+  SecurePipeline:
+    Description: URL of the Pipeline
+    Value: !Sub https://console.aws.amazon.com/codesuite/codepipeline/pipelines/${MySecurePipeline}/view?region=${AWS::Region}
