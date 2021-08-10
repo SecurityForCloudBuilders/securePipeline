@@ -1,21 +1,30 @@
 # securePipeline
 Uma meneira de integrar mais segurança ao seu CI e seu código!
 
-Você precisará:
+<img src="img/Snyk-CodePipeline.png" alt="snykpipe"> </img>
+
+### Você precisará:
 
 -   1 Conta da AWS com usuário com direitos de administrador e com credencias de Git para o AWS CodeCommit;
 -   Ter o Git instalado localmente na sua máquina; 
 -   1 Conta já criada no Trend Micro Cloud One; 
 
-Essa demo irá criar:
+### Links para refêrencia:
+
+- <a href="https://docs.aws.amazon.com/codecommit/latest/userguide/setting-up-gc.html"> Configuração para usuários HTTPS usando credenciais Git </a>
+
+- <a href="https://docs.aws.amazon.com/codecommit/latest/userguide/getting-started.html#getting-started-create-commit"> Introdução ao Git e AWS CodeCommit </a>
+
+### Essa demo irá criar:
 
 -   2 Templates no AWS CloudFormation;
--   1 Repositório no AWS CodePipeline;
+-   1 Repositório no AWS CodeCommit;
 -   1 Build/ Projeto de Compilação no AWS CodeBuild;
 -   1 Pipeline no AWS CodePipeline;
--   2 Buckets no AWS S3;
+-   1 Buckets no AWS S3;
 -   1 Parâmetro no AWS Systems Manager;
 -   2 Roles no AWS IAM Role;
+
 
 <br />
 
@@ -32,7 +41,7 @@ Essa demo irá criar:
 
 <br />
 
-## Caso você já tenha algum repositório no CodeCommit, pode pular essa etapa e testar o seu código nesse repo.
+## Caso você já tenha algum repositório no CodeCommit, pode pular essa etapa e testar o seu código já existente.
 
 <br />
 
