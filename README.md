@@ -129,3 +129,7 @@ Uma meneira de integrar mais segurança ao seu CI e seu código!
 <img src="img/t18.png" alt="snyk"> </img>
 
 </details>
+
+### WARNING:
+
+        - Este projeto é para o propósito de Demostrações! 
