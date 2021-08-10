@@ -130,6 +130,9 @@ Uma meneira de integrar mais segurança ao seu CI e seu código!
 
 </details>
 
+<hr />
+
 ### WARNING:
 
         - Este projeto é para o propósito de Demostrações! 
+        - Não foi criado para ser usado em produção ou com dados sensiveis!
