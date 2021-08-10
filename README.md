@@ -108,7 +108,7 @@ Uma meneira de integrar mais segurança ao seu CI e seu código!
 
 <img src="img/t12.PNG" alt="createcomplete"> </img>
 
-8- Para ver o resultado do Scan, vá ate o serviço "CodePipeline", para isso, nessa mesma tela do Cloud Formation e no o template que acabou de ser criado, clique na aba "Saída" ou "Outputs", e clique no link que aparece ao lado do nome "SecurePipeline"
+8- Para ver o resultado do Scan, vá ate o serviço "CodePipeline", para isso, nessa mesma tela do Cloud Formation e no template que acabou de ser criado, clique na aba "Saída" ou "Outputs", e clique no link que aparece ao lado do nome "SecurePipeline"
 
 <img src="img/t17.PNG" alt="templateoutputs"> </img>
 
