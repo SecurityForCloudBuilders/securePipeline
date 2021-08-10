@@ -7,7 +7,7 @@ Uma meneira de integrar mais segurança ao seu CI e seu código!
 
 -   1 Conta da AWS com usuário com direitos de administrador e com credencias de Git para o AWS CodeCommit;
 -   Ter o Git instalado localmente na sua máquina; 
--   1 Conta já criada no Trend Micro Cloud One; 
+-   1 Conta já criada no <a href="https://cloudone.trendmicro.com/"> Trend Micro Cloud One </a>; 
 
 ### Links para refêrencia:
 
