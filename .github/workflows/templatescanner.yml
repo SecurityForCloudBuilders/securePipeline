@@ -35,9 +35,9 @@ jobs:
         env:
           cc_apikey: ${{ secrets.apikey }}
           maxExtreme: 0
-          maxVeryHigh: 3
-          maxHigh: 6
-          maxMedium: 12
+          maxVeryHigh: 0
+          maxHigh: 3
+          maxMedium: 10
           maxLow: 20
           cc_region: us-west-2
           templatePath: main.pipeline.template.yaml
