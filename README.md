@@ -21,7 +21,7 @@ Uma meneira de integrar mais segurança ao seu CI e seu código!
 -   1 Repositório no AWS CodeCommit;
 -   1 Build/ Projeto de Compilação no AWS CodeBuild;
 -   1 Pipeline no AWS CodePipeline;
--   1 Buckets no AWS S3;
+-   1 Bucket no AWS S3;
 -   1 Parâmetro no AWS Systems Manager;
 -   2 Roles no AWS IAM Role;
 
