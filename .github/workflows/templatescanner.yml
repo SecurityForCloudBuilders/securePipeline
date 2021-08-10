@@ -39,5 +39,5 @@ jobs:
           maxHigh: 10
           maxMedium: 20
           maxLow: 35
-          cc_region: us-east-1
-          templatePath: $GITHUB_WORKSPACE/main.pipeline.template.yaml
+          cc_region: us-west-2
+          templatePath: main.pipeline.template.yaml
