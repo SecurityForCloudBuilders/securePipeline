@@ -96,25 +96,7 @@ Resources:
               Configuration:
                 ProjectName: !Ref CodeBuildSnykScan
               RunOrder: 2
-          
-        ### Deploy Code to S3
-        - Name: Test-to-S3
-          Actions:
-            - Name: DeployStagingAction
-              InputArtifacts:
-                - Name: SourceOutput
-              ActionTypeId:
-                Category: Deploy
-                Owner: AWS
-                Version: 1
-                Provider: S3
-              Configuration: 
-                  BucketName: !Ref BucketToStoreCode
-                  ObjectKey: pipeline-trendworkshop
-                  Extract: true
-              RunOrder: 3
-
-      
+                
       ArtifactStore: 
         Type: S3 
         Location:
