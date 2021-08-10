@@ -98,7 +98,7 @@ Uma meneira de integrar mais segurança ao seu CI e seu código!
 
 <img src="img/t9.PNG" alt="pipeformation"> </img>
 
-8.5- Esse template precisa que você providencie 2 parâmetros. O primeiro é o seu Snyk Token (Consegue encontrar ele na console do Open Source Security) e o outro é o nome do seu repositório, que no nosso caso (e se você estiver seguindo ele) é MyVulnerableApp
+8.5- Esse template precisa que você providencie 2 parâmetros. O primeiro é o seu <a href="https://support.snyk.io/hc/en-us/articles/360004008258-Authenticate-the-CLI-with-your-account#UUID-4f46843c-174d-f448-cadf-893cfd7dd858_UUID-cc337985-30e2-aac4-db7d-934b7e25134b"> Snyk Token </a> (Consegue encontrar ele na console do Open Source Security) e o outro é o nome do seu repositório, que no nosso caso (e se você estiver seguindo ele) é MyVulnerableApp
 
 <img src="img/t10.PNG" alt="param"> </img>
 
