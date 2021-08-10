@@ -27,7 +27,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
-        run: echo Hello, world!
+        run: ls
 
       # Runs Cloud One Conformity Pipeline Scanner
       - name: Cloud One Conformity Pipeline Scanner
@@ -40,4 +40,4 @@ jobs:
           maxMedium: 20
           maxLow: 35
           cc_region: us-east-1
-          templatePath: main.pipeline.template.yaml
+          templatePath: $GITHUB_WORKSPACE/main.pipeline.template.yaml
