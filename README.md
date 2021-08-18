@@ -24,7 +24,7 @@ Uma meneira de integrar mais segurança ao seu CI e seu código!
 -   1 Build/ Projeto de Compilação no AWS CodeBuild;
 -   1 Pipeline no AWS CodePipeline;
 -   1 Bucket no AWS S3;
--   1 Parâmetro no AWS Systems Manager;
+-   11 Parâmetro no AWS Systems Manager;
 -   2 Roles no AWS IAM Role;
 -   1 Registry Privado e 1 Repositório no AWS ECR - Elastic Container Registry;
 
@@ -152,7 +152,7 @@ Uma meneira de integrar mais segurança ao seu CI e seu código!
 
   <img src="img/ecr1.PNG" alt="ecr1"> </img>
 
-  2- Esse template precisa que você providencie 2 parâmetros. O primeiro é o nome que quer para o seu Repositório <b> RepositoryName </b> e o outro é o <b> ECRScan </b> com os valores de <b>[true] </b> ou <b> [false] </b> para caso queira utilizar também o <a href="https://docs.aws.amazon.com/AmazonECR/latest/userguide/image-scanning.html"> escaneamento de imagens </a> do disponivel no próprio ECR
+  2- Esse template precisa que você providencie 2 parâmetros. O primeiro é o nome que quer para o seu Repositório <b> RepositoryName </b> e o outro é o <b> ECRScan </b> com os valores de <b>[true] </b> ou <b> [false] </b> para caso queira utilizar também o <a href="https://docs.aws.amazon.com/AmazonECR/latest/userguide/image-scanning.html"> escaneamento de imagens </a> disponivel no próprio ECR
 
   <img src="img/ecr2.PNG" alt="ecr2"> </img>
 
@@ -164,7 +164,7 @@ Uma meneira de integrar mais segurança ao seu CI e seu código!
 
   <img src="img/ecr5.PNG" alt="ecr5"> </img>
 
-  4- Para ver ir até o Registry criado, vá ate o serviço "Elastic Container Registry", para isso, nessa mesma tela do Cloud Formation e no template que acabou de ser criado, clique na aba "Saída" ou "Outputs", e clique no link que aparece ao lado do nome "RegistryName"
+  4- Para ir até o Registry criado, vá até o serviço "Elastic Container Registry", para isso, nessa mesma tela do Cloud Formation e no template que acabou de ser criado, clique na aba "Saída" ou "Outputs", e clique no link que aparece ao lado do nome "RegistryName"
 
   <img src="img/ecr6.PNG" alt="ecr6"> </img>
 
