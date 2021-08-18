@@ -142,7 +142,7 @@ Uma meneira de integrar mais segurança ao seu CI e seu código!
 <br />
 
   <details>
-    <summary>:point_down: CRIAÇÃO DE UM REGISTRY PRIVADO NO AWS ELASTIC CONTAINER REGISTRY (ECR)  </summary>
+    <summary>:pizza: CRIAÇÃO DE UM REGISTRY PRIVADO NO AWS ELASTIC CONTAINER REGISTRY (ECR)  </summary>
   
   <br />
 
