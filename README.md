@@ -24,7 +24,7 @@ Uma meneira de integrar mais segurança ao seu CI e seu código!
 -   1 Build/ Projeto de Compilação no AWS CodeBuild;
 -   1 Pipeline no AWS CodePipeline;
 -   1 Bucket no AWS S3;
--   11 Parâmetro no AWS Systems Manager;
+-   11 Parâmetros no AWS Systems Manager;
 -   2 Roles no AWS IAM Role;
 -   1 Registry Privado e 1 Repositório no AWS ECR - Elastic Container Registry;
 
@@ -121,7 +121,7 @@ Uma meneira de integrar mais segurança ao seu CI e seu código!
 
 <img src="img/t15.PNG" alt="goingpipe"> </img>
 
-10- Você será redirecionado para o "CodeBuild" e diretamente na compilação onde acontece o escaneamento do código. Vá atá as últimas linhas do Log da Compilação.
+10- Você será redirecionado para o "CodeBuild" e diretamente na compilação onde acontece o escaneamento do código. Vá até as últimas linhas do Log da Compilação.
 
 11- Nessas últimas linhas verá que foi gerado um link "Explore this snapshot at https://app.snyk.io/org/mais-alguma-coisa-aqui", copie esse link e cole no seu navegador. 
 
@@ -130,6 +130,25 @@ Uma meneira de integrar mais segurança ao seu CI e seu código!
 12- O report com os findings estará todo detalhado nele. 
 
 <img src="img/t18.png" alt="snyk"> </img>
+
+13- Logo após a fase "Scan-The-Code-With-Snyk-CLI" for executada com êxito. A terceira etapa desse Pipeline começara a executar, e a fazer o escaneamento da Imagem de um container. Clique em detalhes.
+
+<img src="img/pipe20.PNG" alt="pipe20"> </img>
+
+<img src="img/pipe21.PNG" alt="pipe21"> </img>
+
+14- Você será redirecionado para o "CodeBuild" e diretamente na compilação onde acontece o escaneamento da imagem. Vá até as últimas linhas do Log da Compilação.
+
+15- Nessas últimas linhas verá que aparecerá:
+
+<img src="img/pipe22.PNG" alt="pipe22"> </img>
+
+15.5 Vá até a console do <b> SmartCheck </b>, na coluna esquerda, clique em <b> "Scans" </b>. A imagem já estará sendo escaneada. Clique no Scan dessa imagem ou espere ela concluir e veja os resultados do Scan. 
+
+<img src="img/pipe19.PNG" alt="pipe19"> </img>
+
+<img src="img/pipe23.PNG" alt="pipe23"> </img>
+
 
 </details>
 
