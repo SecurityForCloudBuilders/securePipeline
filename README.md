@@ -107,7 +107,9 @@ Uma meneira de integrar mais segurança ao seu CI e seu código!
 
 - Para pegar o seu Smart Check Token, consulte a <a href="https://deep-security.github.io/smartcheck-docs/api/index.html#operation/createSession"> API</a>. 
 
-- E no caso do parâmetro "SmartCheckURL" coloque a URL do Smart Check mais <a href="https://deep-security.github.io/smartcheck-docs/api/index.html#operation/createScan">/api/scans</a>. Por exemplo: https://smartcheck.example.com/api/scans
+- E no caso do parâmetro "SmartCheckURL" coloque a URL do Smart Check mais <a href="https://deep-security.github.io/smartcheck-docs/api/index.html#operation/createScan">/api/scans</a>. 
+
+      Por exemplo: https://smartcheck.example.com/api/scans
 
 <img src="img/t10.PNG" alt="param"> </img>
 
