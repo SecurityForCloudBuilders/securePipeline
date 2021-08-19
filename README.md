@@ -97,6 +97,8 @@ Uma meneira de integrar mais segurança ao seu CI e seu código!
 <details>
   <summary>:hand: USANDO O AWS CODEBUILD E CODEPIPELINE </summary>
 
+<br />
+
 7- Agora, faça o deploy do template "main.pipeline.template.yaml". Para isso, vá até o serviço do "Cloud Formation"
 
 <img src="img/t9.PNG" alt="pipeformation"> </img>
