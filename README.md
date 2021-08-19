@@ -101,7 +101,7 @@ Uma meneira de integrar mais segurança ao seu CI e seu código!
 
 <img src="img/t9.PNG" alt="pipeformation"> </img>
 
-8.5- Esse template precisa que você providencie 2 parâmetros. O primeiro é o seu <a href="https://support.snyk.io/hc/en-us/articles/360004008258-Authenticate-the-CLI-with-your-account#UUID-4f46843c-174d-f448-cadf-893cfd7dd858_UUID-cc337985-30e2-aac4-db7d-934b7e25134b"> Snyk Token </a> (Consegue encontrar ele na console do Open Source Security) e o outro é o nome do seu repositório, que no nosso caso (e se você estiver seguindo ele) é MyVulnerableApp
+8.5- Esse template precisa que você providencie 12 parâmetros. Para encontrar o <a href="https://support.snyk.io/hc/en-us/articles/360004008258-Authenticate-the-CLI-with-your-account#UUID-4f46843c-174d-f448-cadf-893cfd7dd858_UUID-cc337985-30e2-aac4-db7d-934b7e25134b"> Snyk Token</a>. Para pegar o seu Smart Check Token, consulte a <a href="https://deep-security.github.io/smartcheck-docs/api/index.html#operation/createSession"> API</a>. E no caso do parâmetro "SmartCheckURL" coloque a URL do Smart Check mais <a href="https://deep-security.github.io/smartcheck-docs/api/index.html#operation/createScan">/api/scans</a>. Por exemplo: https://smartcheck.example.com/api/scans
 
 <img src="img/t10.PNG" alt="param"> </img>
 
@@ -143,7 +143,7 @@ Uma meneira de integrar mais segurança ao seu CI e seu código!
 
 <img src="img/pipe22.PNG" alt="pipe22"> </img>
 
-15.5 Vá até a console do <b> SmartCheck </b>, na coluna esquerda, clique em <b> "Scans" </b>. A imagem já estará sendo escaneada. Clique no Scan dessa imagem ou espere ela concluir e veja os resultados do Scan. 
+15.5 - Vá até a console do <b> SmartCheck </b>, na coluna esquerda, clique em <b> "Scans" </b>. A imagem já estará sendo escaneada. Clique no Scan dessa imagem ou espere ela concluir e veja os resultados do Scan. 
 
 <img src="img/pipe19.PNG" alt="pipe19"> </img>
 
