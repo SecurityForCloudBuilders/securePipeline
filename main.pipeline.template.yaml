@@ -12,6 +12,46 @@ Parameters:
     Type: String
     Description: The name of your repository.
 
+  SmartCheckURL:
+    Type: String
+    Description: The Smart Check URL
+
+  SmartCheckAuthorization:
+    Type: String
+    Description: The Smart Check Authorization Token
+
+  ECRRegistry:
+    Type: String
+    Description: The URL for your ECR Registry
+
+  ECRRepoName:
+    Type: String
+    Description: The name of your ECR Repository 
+
+  Imagetag:
+    Type: String
+    Description: Your Image tag
+
+  ImageDigest:
+    Type: String
+    Description: Your Image Digest
+
+  AWSRegion:
+    Type: String
+    Description: Your AWS Region
+
+  AWSAccessKeyID:
+    Type: String
+    Description: Your AWS AccessKeyID
+
+  AWSSecretAccessKey:
+    Type: String
+    Description: Your AWS SecretAccessKey
+
+  insecureSkipVerify:
+    Type: String
+    Description: The Smart Check insecureSkipVerify. true or false
+
 Resources:
 
   #SSM Parameter to store the Snyk Token
@@ -24,28 +64,112 @@ Resources:
       Tier: Standard
       Value: !Sub "${SnykToken}"
 
+  #SSM Parameter to store the Smart Check URL
+  SmartCheckURLParameter:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: SmartCheckAPIURL
+      Type: String
+      Description: Parameter to store the Smart Check URL
+      Tier: Standard
+      Value: !Sub "${SmartCheckURL}"
+
+  #SSM Parameter to store the Smart Check Authorization
+  SmartCheckAuthorizationParameter:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: SmartCheckAuthorization
+      Type: String
+      Description: Parameter to store the Smart Check Authorization
+      Tier: Standard
+      Value: !Sub "${SmartCheckAuthorization}"
+
+  #SSM Parameter to store the Registry URL
+  ECRRegistryParameter:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: registryDemoPipeline
+      Type: String
+      Description: Parameter to store the ECR Registry Name for the Trend Demo Pipeline
+      Tier: Standard
+      Value: !Sub "${ECRRegistry}"
+
+  #SSM Parameter to store the Repository Name
+  RepositoryNameParameter:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: repositoryDemoPipeline
+      Type: String
+      Description: Parameter to store the ECR Repository Name for the Trend Demo Pipeline
+      Tier: Standard
+      Value: !Sub "${ECRRepoName}"
+
+  #SSM Parameter to store the Image tag
+  ImagetagParameter:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: ImagetagDemoPipeline
+      Type: String
+      Description: Parameter to store the Image tag
+      Tier: Standard
+      Value: !Sub "${Imagetag}"
+
+  #SSM Parameter to store the Image Digest
+  ImageDigestParameter:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: ImageDigestDemoPipeline
+      Type: String
+      Description: Parameter to store the Image Digest DemoPipeline
+      Tier: Standard
+      Value: !Sub "${ImageDigest}"
+
+  #SSM Parameter to store the AWS Region
+  awsRegionParameter:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: RegionAWS
+      Type: String
+      Description: Parameter to store the AWS Region
+      Tier: Standard
+      Value: !Sub "${AWSRegion}"
+
+  #SSM Parameter to store the AWS AccessKeyID
+  awsAccessKeyIDParameter:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: AccessKeyIDAWS
+      Type: String
+      Description: Parameter to store the AWS AccessKeyID
+      Tier: Standard
+      Value: !Sub "${AWSAccessKeyID}"
+
+  #SSM Parameter to store the AWS SecretAccessKey
+  awsSecretAccessKeyParameter:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: SecretAccessKeyAWS
+      Type: String
+      Description: Parameter to store the AWS SecretAccessKey
+      Tier: Standard
+      Value: !Sub "${AWSSecretAccessKey}"
+
+  #SSM Parameter to store the insecureSkipVerify
+  insecureSkipVerifyParameter:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: insecureSkipVerify
+      Type: String
+      Description: Parameter to store the insecureSkipVerify Smart Check
+      Tier: Standard
+      Value: !Sub "${insecureSkipVerify}"
+
   BucketToStoreArtifacts:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: !Join
       - "-"
       - - "bucket-to-store-artifacts-pipeline-workshop"
-        - !Select
-          - 0
-          - !Split
-            - "-"
-            - !Select
-              - 2
-              - !Split
-                - "/"
-                - !Ref "AWS::StackId"
-
-  BucketToStoreCode:
-    Type: AWS::S3::Bucket
-    Properties:
-      BucketName: !Join
-      - "-"
-      - - "bucket-to-store-repo-code"
         - !Select
           - 0
           - !Split
@@ -96,6 +220,23 @@ Resources:
               Configuration:
                 ProjectName: !Ref CodeBuildSnykScan
               RunOrder: 2
+
+        ## Build, deploy to ECR and Scan the Container Image using Trend Micro Smart Check 
+        - Name: Scan-And-Build-The-Container-Image
+          Actions:
+            - Name: Container-Scan
+              InputArtifacts:
+                - Name: SourceOutput
+              ActionTypeId:
+                Category: Test
+                Owner: AWS
+                Version: '1'
+                Provider: CodeBuild
+              OutputArtifacts:
+                - Name: ScanAndImageBuildResult
+              Configuration:
+                ProjectName: !Ref ContainerImageScan
+              RunOrder: 3
                 
       ArtifactStore: 
         Type: S3 
@@ -128,6 +269,35 @@ Resources:
       Tags:
         - Key: pipeline-name
           Value: TrendMicro-SecurePipelineWorkshop 
+
+
+  ### Build, deploy to ECR and Scan the Container Image using Trend Micro Smart Check
+  ContainerImageScan:
+    Type: AWS::CodeBuild::Project
+    Properties: 
+      Description: Build the container, push to ECR and Scan the Image using Trend Micro Smart Check
+      Artifacts: 
+        Type: NO_ARTIFACTS
+      Environment:
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/standard:4.0
+        Type: LINUX_CONTAINER
+        PrivilegedMode: false
+      ServiceRole: !Ref CodeBuildSnykScanRole
+      Source:
+        Type: CODECOMMIT
+        Location: !Sub https://git-codecommit.us-east-1.amazonaws.com/v1/repos/${RepoName}
+        BuildSpec: buildspec-container-scan-build.yml
+      LogsConfig:
+          CloudWatchLogs:
+            GroupName: TrendMicro-SecurePipelineWorkshop-logs-SCScan
+            Status: ENABLED
+            StreamName: SmartCheckBuildDemo
+      QueuedTimeoutInMinutes: 10
+      Tags:
+        - Key: pipeline-name
+          Value: TrendMicro-SecurePipelineWorkshop 
+
 
   ### Role used by The Pipeline
   PipelineRole:
@@ -180,9 +350,9 @@ Resources:
                   - codepipeline:*
                   - ssm:*
                   - lambda:*
+                  - ecr:*
                     #- cloudtrail:*
                     #- kms:*
-                    #- ecr:*
                 Resource: '*'
 
 Outputs:
@@ -190,10 +360,6 @@ Outputs:
   S3BucketName:
     Description: URL of the Bucket where the artifacts of the Pipeline is
     Value:  !Sub https://s3.console.aws.amazon.com/s3/buckets/${BucketToStoreArtifacts}?region=${AWS::Region}
-
-  S3BucketRepo:
-    Description: URL of the Bucket where the code is now
-    Value:  !Sub https://s3.console.aws.amazon.com/s3/buckets/${BucketToStoreCode}?region=${AWS::Region}
 
   SecurePipeline:
     Description: URL of the Pipeline

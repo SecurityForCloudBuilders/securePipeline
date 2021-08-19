@@ -1,0 +1,38 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description:  >
+    This template creates a private Registry in AWS Elastic Container Registry.
+
+Parameters:
+  
+  RepositoryName:
+    Type: String
+    Description: Name of the Private Registry on ECR 
+
+  ECRScan:
+    Description: Decide if will use the ECR Image Scan
+    Default: false # If the user dont pass any value, it will be FALSE by default
+    Type: String
+    AllowedValues: [true, false]
+
+# Compares if two values are equal. Returns true if the two values are equal or false if they aren't. In this case, if the user passed TRUE in the parameter
+# It will return true to whoever is calling 
+Conditions:
+  ShouldUseECRImageScan:
+    !Equals [true, !Ref ECRScan]
+
+Resources:
+  # Create the private Registry in ECR
+  PrivateRegistryCreation:
+    Type: AWS::ECR::Repository
+    Properties: 
+      ImageScanningConfiguration: 
+        ScanOnPush: !If [ShouldUseECRImageScan, true, false] # Returns one value if the specified condition evaluates to true and another value if the specified condition evaluates to false. In this case, if the Condition ShouldUseECRImageScan is true it will return the value TRUE, or if it is false will return the value FALSE 
+      RepositoryName: !Sub ${RepositoryName}
+      Tags:
+        - Key: purpose
+          Value: TrendMicro-SecurePipelineWorkshop
+
+Outputs:
+  RegistryName:
+    Description: The name of the Private Registry created.
+    Value: !Sub https://console.aws.amazon.com/ecr/repositories/private/${AWS::AccountId}/${RepositoryName}?region=${AWS::Region}
