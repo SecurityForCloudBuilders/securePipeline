@@ -3,7 +3,7 @@ Uma meneira de integrar mais segurança ao seu CI e seu código!
 
 [![Cloud Formation Scan](https://github.com/SecurityForCloudBuilders/securePipeline/actions/workflows/templatescanner.yml/badge.svg?branch=main)](https://github.com/SecurityForCloudBuilders/securePipeline/actions/workflows/templatescanner.yml)
 
-<img src="img/Snyk-CodePipeline.png" alt="snykpipe"> </img>
+<img src="img/Secure-CodePipeline.png" alt="snykpipe"> </img>
 
 ### Você precisará:
 
