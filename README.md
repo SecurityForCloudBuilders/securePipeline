@@ -41,7 +41,7 @@ Uma meneira de integrar mais segurança ao seu CI e seu código!
 <br />
 
 <details>
-  <summary>:point_down: PRÓXIMO PASSO (OPCIONAL) </summary>
+  <summary>:point_down: CONFIGURAÇÕES ADICIONAIS/ OPCIONAIS </summary>
 
 <br />
 
