@@ -41,6 +41,11 @@ Uma meneira de integrar mais segurança ao seu CI e seu código!
 <br />
 
 <details>
+  <summary>:point_down: PRÓXIMO PASSO (OPCIONAL) </summary>
+
+<br />
+
+<details>
   <summary>:zap: USANDO O AWS CODECOMMIT</summary>
 
 <br />
@@ -86,6 +91,47 @@ Uma meneira de integrar mais segurança ao seu CI e seu código!
     git commit -m "My first Commit"
 
     git push
+
+</details>
+
+<br />
+
+  <details>
+    <summary>:pizza: CRIAÇÃO DE UM REGISTRY PRIVADO NO AWS ELASTIC CONTAINER REGISTRY (ECR)  </summary>
+  
+  <br />
+
+  ## Caso você já tenha alguma imagem no ECR, pode pular essa etapa e testar a sua imagem já existente.
+
+  1- Execute o template ecr.registry.template.yaml na Console da AWS -> Cloud Formation
+
+  <img src="img/ecr1.PNG" alt="ecr1"> </img>
+
+  2- Esse template precisa que você providencie 2 parâmetros. O primeiro é o nome que quer para o seu Repositório <b> RepositoryName </b> e o outro é o <b> ECRScan </b> com os valores de <b>[true] </b> ou <b> [false] </b> para caso queira utilizar também o <a href="https://docs.aws.amazon.com/AmazonECR/latest/userguide/image-scanning.html"> escaneamento de imagens </a> disponivel no próprio ECR
+
+  <img src="img/ecr2.PNG" alt="ecr2"> </img>
+
+  <img src="img/ecr3.PNG" alt="ecr3"> </img>
+
+  <img src="img/ecr4.PNG" alt="ecr4"> </img>
+
+  3- Espere até que essa Stack apareça como "CREATE_COMPLETE"
+
+  <img src="img/ecr5.PNG" alt="ecr5"> </img>
+
+  4- Para ir até o Registry criado, vá até o serviço "Elastic Container Registry", para isso, nessa mesma tela do Cloud Formation e no template que acabou de ser criado, clique na aba "Saída" ou "Outputs", e clique no link que aparece ao lado do nome "RegistryName"
+
+  <img src="img/ecr6.PNG" alt="ecr6"> </img>
+
+  5- Clique no botão "View push commands", siga as instruções que aparecem na tela e faça o push da sua imagem;
+  
+  <img src="img/ecr7.PNG" alt="ecr7"> </img>
+
+  <img src="img/ecr8.PNG" alt="ecr8"> </img>
+
+  5.5- Caso queira, nesse repositório você tem um Dockerfile para usar como exemplo: https://github.com/SecurityForCloudBuilders/Protect-a-Vulnerable-WebApplication/blob/master/Dockerfile
+
+  </details>
 
 </details>
 
@@ -160,55 +206,6 @@ Uma meneira de integrar mais segurança ao seu CI e seu código!
 
 <img src="img/pipe23.PNG" alt="pipe23"> </img>
 
-
-</details>
-
-<hr />
-<br />
-
-<details>
-  <summary>:point_down: PRÓXIMO PASSO (OPCIONAL) </summary>
-
-<br />
-
-  <details>
-    <summary>:pizza: CRIAÇÃO DE UM REGISTRY PRIVADO NO AWS ELASTIC CONTAINER REGISTRY (ECR)  </summary>
-  
-  <br />
-
-  ## Caso você já tenha alguma imagem no ECR, pode pular essa etapa e testar a sua imagem já existente.
-
-  1- Execute o template ecr.registry.template.yaml na Console da AWS -> Cloud Formation
-
-  <img src="img/ecr1.PNG" alt="ecr1"> </img>
-
-  2- Esse template precisa que você providencie 2 parâmetros. O primeiro é o nome que quer para o seu Repositório <b> RepositoryName </b> e o outro é o <b> ECRScan </b> com os valores de <b>[true] </b> ou <b> [false] </b> para caso queira utilizar também o <a href="https://docs.aws.amazon.com/AmazonECR/latest/userguide/image-scanning.html"> escaneamento de imagens </a> disponivel no próprio ECR
-
-  <img src="img/ecr2.PNG" alt="ecr2"> </img>
-
-  <img src="img/ecr3.PNG" alt="ecr3"> </img>
-
-  <img src="img/ecr4.PNG" alt="ecr4"> </img>
-
-  3- Espere até que essa Stack apareça como "CREATE_COMPLETE"
-
-  <img src="img/ecr5.PNG" alt="ecr5"> </img>
-
-  4- Para ir até o Registry criado, vá até o serviço "Elastic Container Registry", para isso, nessa mesma tela do Cloud Formation e no template que acabou de ser criado, clique na aba "Saída" ou "Outputs", e clique no link que aparece ao lado do nome "RegistryName"
-
-  <img src="img/ecr6.PNG" alt="ecr6"> </img>
-
-  5- Clique no botão "View push commands", siga as instruções que aparecem na tela e faça o push da sua imagem;
-  
-  <img src="img/ecr7.PNG" alt="ecr7"> </img>
-
-  <img src="img/ecr8.PNG" alt="ecr8"> </img>
-
-  5.5- Caso queira, nesse repositório você tem um Dockerfile para usar como exemplo: https://github.com/SecurityForCloudBuilders/Protect-a-Vulnerable-WebApplication/blob/master/Dockerfile
-
-  <br />
-
-  </details>
 
 </details>
 

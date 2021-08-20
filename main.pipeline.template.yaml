@@ -282,7 +282,7 @@ Resources:
         ComputeType: BUILD_GENERAL1_SMALL
         Image: aws/codebuild/standard:4.0
         Type: LINUX_CONTAINER
-        PrivilegedMode: false
+        PrivilegedMode: true
       ServiceRole: !Ref CodeBuildSnykScanRole
       Source:
         Type: CODECOMMIT
