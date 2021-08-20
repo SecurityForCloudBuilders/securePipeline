@@ -20,9 +20,9 @@ Uma meneira de integrar mais segurança ao seu CI e seu código!
 
 ### Essa demo irá criar:
 
--   2 Templates no AWS CloudFormation;
+-   1 Template no AWS CloudFormation ou 3 Templates se usar todos os CFTs nesse Repositório;
 -   1 Repositório no AWS CodeCommit;
--   1 Build/ Projeto de Compilação no AWS CodeBuild;
+-   2 Build/ Projetos de Compilação no AWS CodeBuild;
 -   1 Pipeline no AWS CodePipeline;
 -   1 Bucket no AWS S3;
 -   11 Parâmetros no AWS Systems Manager;
@@ -41,7 +41,7 @@ Uma meneira de integrar mais segurança ao seu CI e seu código!
 <br />
 
 <details>
-  <summary>:point_down: PRÓXIMO PASSO (OPCIONAL) </summary>
+  <summary>:point_down: CONFIGURAÇÕES ADICIONAIS/ OPCIONAIS </summary>
 
 <br />
 
@@ -206,6 +206,13 @@ Uma meneira de integrar mais segurança ao seu CI e seu código!
 
 <img src="img/pipe23.PNG" alt="pipe23"> </img>
 
+16- Logo após a conclusão do Scan, será feito o build e o push da imagem para o Registry no ECR.
+
+<img src="img/pipe25.PNG" alt="pipe25"> </img>
+
+<img src="img/pipe26.PNG" alt="pipe26"> </img>
+
+<img src="img/pipe27.PNG" alt="pipe27"> </img>
 
 </details>
 
