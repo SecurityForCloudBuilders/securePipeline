@@ -1,0 +1,73 @@
+version: 0.2
+
+env:
+  #variables:
+     # key: "value"
+  parameter-store:
+     SmartCheckURL: "SmartCheckAPIURL"
+     SmartCheckAuthorization: "SmartCheckAuthorization"
+     ECR_Registry: "registryDemoPipeline"
+     Repository: "repositoryDemoPipeline"
+     Imagetag: "ImagetagDemoPipeline"
+     ImageDigest: "ImageDigestDemoPipeline"
+     awsRegion: "RegionAWS"
+     awsAccessKeyID: "AccessKeyIDAWS"
+     awsSecretAccessKey: "SecretAccessKeyAWS"
+     insecureSkipVerify: "insecureSkipVerify"
+  #secrets-manager:
+     # key: secret-id:json-key:version-stage:version-id
+     # key: secret-id:json-key:version-stage:version-id
+  #exported-variables:
+     # - variable
+     # - variable
+  #git-credential-helper: yes
+#batch:
+  #fast-fail: true
+  #build-list:
+  #build-matrix:
+  #build-graph:
+phases:
+  #install:
+    #Se você usar a imagem padrão do Ubuntu 2.0 ou posterior, você deve especificar as versões de tempo de execução.
+    #Se você especificar versões de tempo de execução e usar uma imagem que não seja a imagem padrão do Ubuntu 2.0, a compilação falhará.
+    #runtime-versions:
+      # name: version
+      # name: version
+    #commands:
+      # - command
+      # - command
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region ${awsRegion} | docker login --username AWS --password-stdin ${ECR_Registry}
+  build:
+    commands:
+       - echo Container Scan using Trend Micro Smart Check started on `date`
+       - curl --location --request POST ${SmartCheckURL} --insecure --header 'Authorization:Bearer '${SmartCheckAuthorization}'' --header 'Content-Type:application/json' --header 'X-Api-Version:2018-05-01' --data-raw '{ "name":"Scan a Container Image in AWS Elastic Container Registry", "source":{ "type":"docker","registry":"'${ECR_Registry}'","repository":"'${Repository}'","tag":"'${Imagetag}'","digest":"'${ImageDigest}'","credentials":{"aws":{"region":"'${awsRegion}'","accessKeyID":"'${awsAccessKeyID}'","secretAccessKey":"'${awsSecretAccessKey}'"}},"insecureSkipVerify":'${insecureSkipVerify}'},"context":{"Scan":"Sucesso!"}}'
+       - echo Container Build started on `date`
+       - echo Building the Docker image...          
+       - docker build -t ${Repository} .
+       - docker tag ${Repository}:latest ${ECR_Registry}/${Repository}:latest
+  post_build:
+    commands:
+       - echo Build completed on `date`
+       - echo Pushing the Docker image...
+       - docker push ${ECR_Registry}/${Repository}:latest
+#reports:
+  #report-name-or-arn:
+    #files:
+      # - location
+      # - location
+    #base-directory: location
+    #discard-paths: yes
+    #file-format: JunitXml | CucumberJson
+#artifacts:
+  #files:
+    # - location
+    # - location
+  #name: $(date +%Y-%m-%d)
+  #discard-paths: yes
+  #base-directory: location
+#cache:
+  #paths:
+    # - paths

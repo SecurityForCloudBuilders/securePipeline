@@ -52,6 +52,10 @@ Parameters:
     Type: String
     Description: The Smart Check insecureSkipVerify. true or false
 
+  emailAddress:
+    Type: String
+    Description: The email Address that you want to receive the Manual Approve Notification
+
 Resources:
 
   #SSM Parameter to store the Snyk Token
@@ -180,6 +184,19 @@ Resources:
                 - "/"
                 - !Ref "AWS::StackId"
 
+  # SNS Topic for Manual Approve
+  SNSTopicManualApprove:
+    Type: AWS::SNS::Topic
+    Properties:
+      FifoTopic: false
+      Subscription: 
+      - Endpoint: !Sub ${emailAddress}
+        Protocol: email
+      TopicName: TrendMicroWorkshopPipelineManualApprove
+      Tags:
+        - Key: pipeline-name
+          Value: TrendMicro-SecurePipelineWorkshop
+
   MySecurePipeline:
     Type: AWS::CodePipeline::Pipeline
     Properties:
@@ -221,6 +238,22 @@ Resources:
                 ProjectName: !Ref CodeBuildSnykScan
               RunOrder: 2
 
+
+        ## Manual Aprove
+        - Name: ManualApprove
+          Actions:
+            - Name: CodeVulnerabilityResultManualApprove
+              ActionTypeId:
+                Category: Approval
+                Owner: AWS
+                Version: '1'
+                Provider: Manual
+              Configuration:
+                NotificationArn: !Ref SNSTopicManualApprove
+                CustomData: "Verifique o número de Vulnerabilidades."
+                ExternalEntityLink: !Sub https://console.aws.amazon.com/codesuite/codepipeline/pipelines/TrendMicro-SecurePipelineWorkshop/view?region=${AWS::Region}
+              RunOrder: 3 
+
         ## Build, deploy to ECR and Scan the Container Image using Trend Micro Smart Check 
         - Name: Scan-And-Build-The-Container-Image
           Actions:
@@ -236,7 +269,7 @@ Resources:
                 - Name: ScanAndImageBuildResult
               Configuration:
                 ProjectName: !Ref ContainerImageScan
-              RunOrder: 3
+              RunOrder: 4
                 
       ArtifactStore: 
         Type: S3 
