@@ -2,6 +2,37 @@ AWSTemplateFormatVersion: "2010-09-09"
 Description:  >
     This template creates a CI/CD DevSecOps pipeline using Trend Micro Cloud One Solutions to build a more secure proccess automatically.
 
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - Label:
+          default: "[ Customizable Section: General Configuration ]"
+        Parameters:
+          - emailAddress
+      - Label:
+          default: "[ Customizable Section: Open Source Security by Snyk ]"
+        Parameters:
+          - SnykToken
+          - RepoName
+      - Label:
+          default: "[ Customizable Section: Trend Micro Container Security ]"
+        Parameters:
+          - SmartCheckURL
+          - SmartCheckAuthorization
+          - ECRRegistry
+          - ECRRepoName 
+          - Imagetag
+          - ImageDigest
+          - AWSRegion
+          - AWSAccessKeyID
+          - AWSSecretAccessKey
+          - insecureSkipVerify
+      - Label:
+          default: "[ Customizable Section: Deploy To ECS]"
+        Parameters:
+          - Cluster
+          - Service
+
 Parameters:
 
   SnykToken:
