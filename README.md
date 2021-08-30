@@ -11,12 +11,15 @@ Uma meneira de integrar mais segurança ao seu CI e seu código!
 -   Ter o Git instalado localmente na sua máquina; 
 -   1 Conta já criada no <a href="https://cloudone.trendmicro.com/"> Trend Micro Cloud One </a>; 
 -   Ter o <a href="https://www.trendmicro.com/product_trials/download/index/br/168"> Trend Micro - Smart Check </a> instalado e pronto;
+-   Ter um Cluster no AWS Elastic Container Service - ECS e um Service nesse cluster já criado;
 
 ### Links para refêrencia:
 
 - <a href="https://docs.aws.amazon.com/codecommit/latest/userguide/setting-up-gc.html"> Configuração para usuários HTTPS usando credenciais Git </a>
 
 - <a href="https://docs.aws.amazon.com/codecommit/latest/userguide/getting-started.html#getting-started-create-commit"> Introdução ao Git e AWS CodeCommit </a>
+
+- <a href="https://github.com/SecurityForCloudBuilders/aws-cloudformation-fargate"> Como criar um Cluster no ECS utilizando o AWS CloudFormation </a>
 
 ### Essa demo irá criar:
 
@@ -28,6 +31,7 @@ Uma meneira de integrar mais segurança ao seu CI e seu código!
 -   11 Parâmetros no AWS Systems Manager;
 -   2 Roles no AWS IAM Role;
 -   1 Registry Privado e 1 Repositório no AWS ECR - Elastic Container Registry;
+-   1 Tópico no SNS
 
 
 <br />
@@ -150,7 +154,7 @@ Uma meneira de integrar mais segurança ao seu CI e seu código!
 
 <img src="img/t9.PNG" alt="pipeformation"> </img>
 
-8.5- Esse template precisa que você providencie 12 parâmetros. 
+8.5- Esse template precisa que você providencie 15 parâmetros. 
 
 - Para encontrar o <a href="https://support.snyk.io/hc/en-us/articles/360004008258-Authenticate-the-CLI-with-your-account#UUID-4f46843c-174d-f448-cadf-893cfd7dd858_UUID-cc337985-30e2-aac4-db7d-934b7e25134b"> Snyk Token</a>. 
 
@@ -188,31 +192,57 @@ Uma meneira de integrar mais segurança ao seu CI e seu código!
 
 <img src="img/t18.png" alt="snyk"> </img>
 
-13- Logo após a fase "Scan-The-Code-With-Snyk-CLI" for executada com êxito. A terceira etapa desse Pipeline começara a executar, e a fazer o escaneamento da Imagem de um container. Clique em detalhes.
+13- Agora será a etapa de Aprovação Manual, você reberá um email (no endereço de email que colocou nos paramêtros do Template) com o link do Pipeline para fazer a aprovação ou se ainda estiver na console, clique no botão "Revisão". Coloque uma justificativa, e "Aprove" ou "Rejeite". Faça essa decisão baseado no número de Vulnerabilidades achadas na etapa anterior!
+
+<img src="img/pipe28.PNG" alt="pipe28"> </img>
+
+<img src="img/pipe29.PNG" alt="pipe29"> </img>
+
+<img src="img/pipe30.PNG" alt="pipe30"> </img>
+
+14- Caso você aprove, irá passar para a próxima etapa. Caso rejeite, irá falhar o Pipeline e não avançará para a próxima etapa.
+
+<img src="img/pipe31.PNG" alt="pipe31"> </img>
+
+15- Logo após a fase "Scan-The-Code-With-Snyk-CLI" for executada com êxito. A terceira etapa desse Pipeline começara a executar, e a fazer o escaneamento da Imagem de um container. Clique em detalhes.
 
 <img src="img/pipe20.PNG" alt="pipe20"> </img>
 
 <img src="img/pipe21.PNG" alt="pipe21"> </img>
 
-14- Você será redirecionado para o "CodeBuild" e diretamente na compilação onde acontece o escaneamento da imagem. Vá até as últimas linhas do Log da Compilação.
+16- Você será redirecionado para o "CodeBuild" e diretamente na compilação onde acontece o escaneamento da imagem. Vá até as últimas linhas do Log da Compilação.
 
-15- Nessas últimas linhas verá que aparecerá:
+17- Nessas últimas linhas verá que aparecerá:
 
 <img src="img/pipe22.PNG" alt="pipe22"> </img>
 
-15.5 - Vá até a console do <b> SmartCheck </b>, na coluna esquerda, clique em <b> "Scans" </b>. A imagem já estará sendo escaneada. Clique no Scan dessa imagem ou espere ela concluir e veja os resultados do Scan. 
+17.5 - Vá até a console do <b> SmartCheck </b>, na coluna esquerda, clique em <b> "Scans" </b>. A imagem já estará sendo escaneada. Clique no Scan dessa imagem ou espere ela concluir e veja os resultados do Scan. 
 
 <img src="img/pipe19.PNG" alt="pipe19"> </img>
 
 <img src="img/pipe23.PNG" alt="pipe23"> </img>
 
-16- Logo após a conclusão do Scan, será feito o build e o push da imagem para o Registry no ECR.
+18- Logo após a conclusão do Scan, será feito o build e o push da imagem para o Registry no ECR.
 
 <img src="img/pipe25.PNG" alt="pipe25"> </img>
 
 <img src="img/pipe26.PNG" alt="pipe26"> </img>
 
 <img src="img/pipe27.PNG" alt="pipe27"> </img>
+
+19- Agora será a etapa de Aprovação Manual, você reberá um email (no endereço de email que colocou nos paramêtros do Template) com o link do Pipeline para fazer a aprovação ou se ainda estiver na console, clique no botão "Revisão". Coloque uma justificativa, e "Aprove" ou "Rejeite". Faça essa decisão baseado no número de Vulnerabilidades achadas na etapa anterior!
+
+<img src="img/pipe32.PNG" alt="pipe32"> </img>
+
+<img src="img/pipe33.PNG" alt="pipe33"> </img>
+
+20- A próxima etapa é fazer o Deploy para no Fargate no ECS. Para isso, você terá que colocar o nome do seu Container e qual o Registry que ele está no arquivo <strong> <i> imagedefinitions.json </i> </strong>. Clique em "Detalhes" para ser redirecionado para o serviço do AWS ECS - Elastic Container Service.
+
+<img src="img/pipe34.PNG" alt="pipe34"> </img>
+
+<img src="img/pipe35.PNG" alt="pipe35"> </img>
+
+<img src="img/pipe36.PNG" alt="pipe36"> </img>
 
 </details>
 

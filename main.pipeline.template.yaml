@@ -56,6 +56,14 @@ Parameters:
     Type: String
     Description: The email Address that you want to receive the Manual Approve Notification
 
+  Cluster:
+    Type: String
+    Description: The name of your ECS Cluster
+  
+  Service:
+    Type: String
+    Description: The name of your Service in the ECS Cluster
+
 Resources:
 
   #SSM Parameter to store the Snyk Token
@@ -270,7 +278,40 @@ Resources:
               Configuration:
                 ProjectName: !Ref ContainerImageScan
               RunOrder: 4
-                
+
+        ## Manual Aprove 2 - Before Deploy to Fargate
+        - Name: SecondManualApprove
+          Actions:
+            - Name: ContainerVulnerabilityResultManualApprove
+              ActionTypeId:
+                Category: Approval
+                Owner: AWS
+                Version: '1'
+                Provider: Manual
+              Configuration:
+                NotificationArn: !Ref SNSTopicManualApprove
+                CustomData: "Verifique o número de Vulnerabilidades."
+                ExternalEntityLink: !Sub https://console.aws.amazon.com/codesuite/codepipeline/pipelines/TrendMicro-SecurePipelineWorkshop/view?region=${AWS::Region}
+              RunOrder: 5
+
+
+        ## Deploy image to Fargate  
+        - Name: Deployment
+          Actions:
+            - Name: Deploy-to-Fargate
+              InputArtifacts:
+                - Name: SourceOutput
+              ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: '1'
+                Provider: ECS
+              Configuration:
+                ClusterName: !Ref Cluster
+                ServiceName: !Ref Service
+                FileName: imagedefinitions.json
+              RunOrder: 6
+
       ArtifactStore: 
         Type: S3 
         Location:
