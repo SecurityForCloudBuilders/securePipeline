@@ -15,6 +15,8 @@ Uma meneira de integrar mais segurança ao seu CI e seu código!
 
 ### Links para refêrencia:
 
+- Esse projeto foi baseado nesse Blog Post: <a href="https://aws.amazon.com/pt/blogs/aws-brasil/construindo-um-pipeline-de-ci-cd-aws-devsecops-de-ponta-a-ponta-com-ferramentas-de-codigo-aberto-sca-sast-e-dast/"> Construindo um pipeline de CI / CD AWS DevSecOps de ponta a ponta com ferramentas de código aberto SCA, SAST e DAST </a>
+
 - <a href="https://docs.aws.amazon.com/codecommit/latest/userguide/setting-up-gc.html"> Configuração para usuários HTTPS usando credenciais Git </a>
 
 - <a href="https://docs.aws.amazon.com/codecommit/latest/userguide/getting-started.html#getting-started-create-commit"> Introdução ao Git e AWS CodeCommit </a>
